@@ -1,0 +1,66 @@
+// Site-wide settings — change the name here and it updates everywhere.
+export const site = {
+  name: "Mining Consortium",
+  tagline: "Member portal & news",
+};
+
+// The SEZ Africa transaction engagement protocol. Every new project starts
+// with these four phases as its checklist. Each phase is a stage you can mark
+// complete; its bullet points become tick-off items. Edit these to change the
+// template used for future projects (existing projects keep their own copy).
+export const defaultTransactionStages: {
+  name: string;
+  description: string;
+  items: string[];
+}[] = [
+  {
+    name: "Phase 1 — Party Identification",
+    description:
+      "Before any commercial discussions or requests for buyer documentation, each participant introduces themselves.",
+    items: [
+      "Full name",
+      "Position / designation",
+      "Company represented",
+      "Country of registration",
+      "Role in the transaction (Principal Seller, Mandate, Broker, Facilitator, Logistics, etc.)",
+      "Relationship to the commodity owner or supplier",
+    ],
+  },
+  {
+    name: "Phase 2 — Seller Due Diligence",
+    description:
+      "Once the parties have been identified, the seller provides verification documents.",
+    items: [
+      "Full legal name of the Seller",
+      "Company registration documents",
+      "Company profile",
+      "Proof of authority to sell (Exclusive Mandate, Board Resolution or Corporate Authorization)",
+      "Commodity specifications",
+      "Available quantity and monthly supply capacity",
+      "Country of origin",
+      "Loading point",
+      "Pricing basis and preferred Incoterms",
+      "Standard sales procedure",
+    ],
+  },
+  {
+    name: "Phase 3 — Confidentiality & Cooperation Framework",
+    description:
+      "Once the opportunity is verified and both parties agree to proceed, execute the protective agreements.",
+    items: [
+      "Mutual Non-Disclosure Agreement (NDA)",
+      "Non-Circumvention and Non-Disclosure Agreement (NCNDA)",
+      "Fee Protection Agreement (where intermediaries and commissions apply)",
+    ],
+  },
+  {
+    name: "Phase 4 — Commercial Documentation",
+    description:
+      "Following successful completion of the earlier phases, the parties exchange commercial documentation.",
+    items: [
+      "Soft Corporate Offer (SCO) or Full Corporate Offer (FCO)",
+      "Letter of Intent (LOI) or Irrevocable Corporate Purchase Order (ICPO)",
+      "Sales and Purchase Agreement (SPA)",
+    ],
+  },
+];
