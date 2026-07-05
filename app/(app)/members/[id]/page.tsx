@@ -14,7 +14,8 @@ import { createClient } from "@/lib/supabase/server";
 import { getSessionProfile } from "@/lib/auth";
 import { Avatar } from "@/components/Avatar";
 import { MemberAdminActions } from "@/components/MemberAdminActions";
-import type { Member } from "@/lib/types";
+import { MemberDocuments } from "@/components/MemberDocuments";
+import type { Member, MemberDocument } from "@/lib/types";
 
 export default async function MemberPage({
   params,
@@ -32,6 +33,13 @@ export default async function MemberPage({
     .single<Member>();
 
   if (!member) notFound();
+
+  const { data: memberDocs } = await supabase
+    .from("member_documents")
+    .select("*")
+    .eq("member_id", id)
+    .order("created_at", { ascending: false })
+    .returns<MemberDocument[]>();
 
   const facts = [
     { icon: Mail, label: "Email", value: member.email, href: member.email ? `mailto:${member.email}` : null },
@@ -107,6 +115,11 @@ export default async function MemberPage({
           </div>
         )}
       </div>
+
+      <MemberDocuments
+        memberId={member.id}
+        initialDocuments={memberDocs ?? []}
+      />
 
       {isAdmin && <MemberAdminActions member={member} />}
     </div>

@@ -4,6 +4,43 @@ export const site = {
   tagline: "Member portal & news",
 };
 
+// Schedule 1 — Consortium Members Register: the due-diligence documents each
+// member provides. These become the upload checklist on a member's profile.
+export const requiredMemberDocuments: {
+  key: string;
+  label: string;
+  hint?: string;
+}[] = [
+  {
+    key: "identity",
+    label: "Certified passport or national ID",
+    hint: "Certified copy of a passport or national ID.",
+  },
+  {
+    key: "cert_incorporation",
+    label: "Certificate of Incorporation",
+    hint: "For companies.",
+  },
+  {
+    key: "proof_of_authority",
+    label: "Proof of authority",
+    hint: "Board Resolution or Power of Attorney, where applicable.",
+  },
+  {
+    key: "bank_confirmation",
+    label: "Bank confirmation letter",
+    hint: "Where commissions or payments may be made.",
+  },
+  {
+    key: "specimen_signature",
+    label: "Specimen signature",
+  },
+  {
+    key: "company_profile",
+    label: "Company profile / capability statement",
+  },
+];
+
 // The SEZ Africa transaction engagement protocol. Every new project starts
 // with these four phases as its checklist. Each phase is a stage you can mark
 // complete; its bullet points become tick-off items. Edit these to change the

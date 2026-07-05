@@ -25,6 +25,11 @@ Everything is invitation-only: nobody can see anything without signing in.
    This adds the **Projects** tracker (the SEZ Africa phases), the **Documents**
    file store, and its private storage bucket. Until this is run, those two
    pages just show an empty state.
+5. Paste and run
+   [`supabase/03_member_documents.sql`](supabase/03_member_documents.sql).
+   This adds the per-member **Schedule 1 due-diligence uploads** on member
+   profiles (private bucket; a member sees only the files they uploaded,
+   admins see all).
 
 ## 2. Connect this website to the database
 
@@ -123,6 +128,7 @@ Without this, news posts still appear on the site — they just aren't emailed.
 | Database schema & security rules | `supabase/schema.sql` |
 | Starting member data | `supabase/seed.sql` |
 | Projects & documents tables + bucket | `supabase/02_projects_documents.sql` |
+| Member Schedule 1 documents + bucket | `supabase/03_member_documents.sql` |
 | Site name + the SEZ project phase template | `lib/config.ts` |
 | Colours & fonts | `app/globals.css` |
 | Pages | `app/(app)/…` (dashboard, members, projects, documents, news) |
@@ -131,7 +137,11 @@ Without this, news posts still appear on the site — they just aren't emailed.
 ## What members can do
 
 - **Members** — everyone can browse the directory. Admins add, edit, invite,
-  and remove members.
+  and remove members. Each profile has a **Schedule 1 documents** checklist
+  (certified ID, certificate of incorporation, proof of authority, bank
+  letter, specimen signature, company profile) that members upload against;
+  these files are private — a member sees only their own uploads, admins see
+  all. Edit the checklist in `requiredMemberDocuments` in `lib/config.ts`.
 - **Projects** — any signed-in member can add a project. Each one starts with
   the SEZ Africa four phases; tick items off, mark a phase complete, mark the
   whole project complete, or add your own phases and items.

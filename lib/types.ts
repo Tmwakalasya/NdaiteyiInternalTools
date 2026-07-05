@@ -77,3 +77,17 @@ export type Document = {
   uploaded_by: string | null;
   created_at: string;
 };
+
+// A due-diligence file uploaded against a member's Schedule 1 register entry.
+export type MemberDocument = {
+  id: string;
+  member_id: string;
+  doc_type: string;
+  label: string;
+  storage_path: string;
+  file_name: string;
+  size_bytes: number | null;
+  mime_type: string | null;
+  uploaded_by: string | null;
+  created_at: string;
+};
