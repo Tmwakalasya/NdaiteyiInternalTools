@@ -1,6 +1,7 @@
 // Site-wide settings — change the name here and it updates everywhere.
 export const site = {
-  name: "Mining Consortium",
+  name: "Esinet Ndaiteyi Mining Consortium",
+  shortName: "Esinet Ndaiteyi",
   tagline: "Member portal & news",
 };
 

@@ -50,7 +50,7 @@ export default function SetPasswordPage() {
         <span className="mb-6 flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-white">
           <KeyRound size={18} strokeWidth={2.25} />
         </span>
-        <p className="mono-label mb-3">{site.name}</p>
+        <p className="mono-label mb-3">{site.shortName}</p>
         <h1 className="text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
           Choose a <span className="emph">password</span>
         </h1>

@@ -7,11 +7,11 @@ import {
   House,
   Layers,
   LogOut,
-  Mountain,
   Newspaper,
   Plus,
   Users,
 } from "lucide-react";
+import { LogoMark } from "@/components/Logo";
 import { createClient } from "@/lib/supabase/client";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { site } from "@/lib/config";
@@ -73,11 +73,14 @@ export function Sidebar({ email, isAdmin }: { email: string; isAdmin: boolean })
   return (
     <aside className="sticky top-0 z-10 flex h-screen w-64 shrink-0 flex-col border-r border-line bg-card px-4 py-5">
       <Link href="/dashboard" className="flex items-center gap-2.5 px-2">
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-white">
-          <Mountain size={16} strokeWidth={2.25} />
-        </span>
-        <span className="text-[15px] font-semibold tracking-tight">
-          {site.name}
+        <LogoMark className="h-8 w-8 shrink-0" />
+        <span className="min-w-0">
+          <span className="block truncate text-[15px] font-semibold tracking-tight">
+            {site.shortName}
+          </span>
+          <span className="block font-mono text-[9px] uppercase tracking-[0.18em] text-muted">
+            Mining Consortium
+          </span>
         </span>
       </Link>
 

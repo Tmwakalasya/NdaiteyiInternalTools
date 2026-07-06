@@ -2,8 +2,8 @@
 
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Mountain } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { LogoMark } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { site } from "@/lib/config";
 
@@ -69,12 +69,10 @@ function LoginForm() {
         <ThemeToggle />
       </div>
       <div className="card w-full max-w-md p-8 sm:p-10">
-        <span className="mb-6 flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-white">
-          <Mountain size={19} strokeWidth={2.25} />
-        </span>
-        <p className="mono-label mb-3">Member portal</p>
+        <LogoMark className="mb-6 h-10 w-10" />
+        <p className="mono-label mb-3">Mining Consortium — Member portal</p>
         <h1 className="text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
-          Mining <span className="emph">Consortium</span>
+          Esinet <span className="emph">Ndaiteyi</span>
         </h1>
         <p className="mt-2.5 text-sm text-muted">
           {mode === "login"
