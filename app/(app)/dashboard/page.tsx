@@ -1,7 +1,14 @@
 import Link from "next/link";
-import { ArrowRight, FileText, Layers, Newspaper, Plus, Users } from "lucide-react";
+import { FileText, Layers, Newspaper, Plus, Users } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import type { NewsPost, Profile } from "@/lib/types";
+import { EmptyState } from "@/components/EmptyState";
+import { StatCard } from "@/components/StatCard";
+import { site } from "@/lib/config";
+import type { NewsPost, Profile, Project } from "@/lib/types";
+
+type ProjectWithStages = Project & {
+  project_stages: { completed: boolean }[];
+};
 
 function greeting() {
   const hour = new Date().getHours();
@@ -23,6 +30,7 @@ export default async function DashboardPage() {
     { count: newsCount },
     { data: latestNews },
     { data: profile },
+    { data: activeProjects },
   ] = await Promise.all([
     supabase.from("members").select("*", { count: "exact", head: true }),
     supabase.from("projects").select("*", { count: "exact", head: true }),
@@ -35,6 +43,13 @@ export default async function DashboardPage() {
       .limit(3)
       .returns<NewsPost[]>(),
     supabase.from("profiles").select("*").eq("id", user!.id).single<Profile>(),
+    supabase
+      .from("projects")
+      .select("*, project_stages(completed)")
+      .eq("status", "active")
+      .order("created_at", { ascending: false })
+      .limit(3)
+      .returns<ProjectWithStages[]>(),
   ]);
 
   const isAdmin = profile?.role === "admin";
@@ -45,95 +60,145 @@ export default async function DashboardPage() {
     month: "long",
   });
 
+  const members = memberCount ?? 0;
+  const projects = projectCount ?? 0;
+  const docs = docCount ?? 0;
+  const news = newsCount ?? 0;
+
   const stats = [
-    { href: "/members", label: "Members", count: memberCount, icon: Users, accent: true },
-    { href: "/projects", label: "Projects", count: projectCount, icon: Layers, accent: false },
-    { href: "/documents", label: "Documents", count: docCount, icon: FileText, accent: false },
-    { href: "/news", label: "News updates", count: newsCount, icon: Newspaper, accent: false },
+    {
+      href: "/members",
+      label: "Members",
+      count: members,
+      detail: members === 1 ? "1 registered" : `${members} registered`,
+      icon: Users,
+      variant: "indigo" as const,
+    },
+    {
+      href: "/projects",
+      label: "Projects",
+      count: projects,
+      detail: projects === 1 ? "1 transaction" : `${projects} transactions`,
+      icon: Layers,
+      variant: "violet" as const,
+    },
+    {
+      href: "/documents",
+      label: "Documents",
+      count: docs,
+      detail: docs === 1 ? "1 file shared" : `${docs} files shared`,
+      icon: FileText,
+      variant: "slate" as const,
+    },
+    {
+      href: "/news",
+      label: "News updates",
+      count: news,
+      detail: news === 1 ? "1 post" : `${news} posts`,
+      icon: Newspaper,
+      variant: "rose" as const,
+    },
   ];
 
   return (
-    <div className="space-y-10">
-      <div>
-        <p className="mono-label">{today}</p>
-        <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
-          {greeting()}
-          {firstName ? (
-            <>
-              , <span className="emph">{firstName}</span>
-            </>
-          ) : (
-            ""
-          )}
-        </h1>
-        <p className="mt-3 text-muted">
-          Here&rsquo;s what&rsquo;s happening in the consortium.
-        </p>
+    <div className="space-y-8">
+      <div className="hero-band">
+        <div className="relative z-[1]">
+          <p className="section-label">{today}</p>
+          <h1 className="display-title mt-2 text-3xl sm:text-4xl">
+            {greeting()}
+            {firstName ? (
+              <>
+                , <span className="emph">{firstName}</span>
+              </>
+            ) : (
+              ""
+            )}
+          </h1>
+          <p className="mt-2 text-sm text-muted">
+            {site.name} — {site.tagline}
+          </p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            <Link href="/projects/new" className="btn-primary">
+              <Plus size={15} /> New project
+            </Link>
+            <Link href="/documents" className="btn-secondary">
+              <Plus size={15} /> Upload document
+            </Link>
+            {isAdmin && (
+              <Link href="/news/new" className="btn-secondary">
+                <Plus size={15} /> Post news
+              </Link>
+            )}
+          </div>
+        </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map(({ href, label, count, icon: Icon, accent }) => (
-          <Link
-            key={href}
-            href={href}
-            className="card group flex flex-col gap-4 p-5 transition hover:border-line-strong"
-          >
-            <div className="flex items-center justify-between">
-              <span
-                className={`flex h-11 w-11 items-center justify-center rounded-2xl border ${
-                  accent
-                    ? "border-accent/15 bg-accent/10 text-accent"
-                    : "border-line bg-base text-ink"
-                }`}
-              >
-                <Icon size={20} strokeWidth={1.75} />
-              </span>
-              <ArrowRight
-                size={17}
-                className="text-muted transition group-hover:translate-x-1 group-hover:text-ink"
-              />
-            </div>
-            <div>
-              <p className="text-3xl font-semibold tracking-tight">
-                {count ?? 0}
-              </p>
-              <p className="text-sm text-muted">{label}</p>
-            </div>
-          </Link>
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {stats.map((stat) => (
+          <StatCard key={stat.href} {...stat} />
         ))}
       </div>
 
-      <div className="card flex flex-col items-start gap-4 p-6 sm:flex-row sm:items-center">
-        <div className="flex-1">
-          <p className="mono-label mb-2">Quick actions</p>
-          <h2 className="text-xl font-semibold tracking-tight">
-            Start something
-          </h2>
-          <p className="mt-1 text-sm text-muted">
-            Add a project, upload a document{isAdmin ? ", or post an update" : ""}.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-3">
-          <Link href="/projects/new" className="btn-primary">
-            <Plus size={16} /> New project
-          </Link>
-          <Link href="/documents" className="btn-secondary">
-            <Plus size={16} /> Upload document
-          </Link>
-          {isAdmin && (
-            <Link href="/news/new" className="btn-secondary">
-              <Plus size={16} /> Post news
+      {activeProjects && activeProjects.length > 0 && (
+        <section>
+          <div className="mb-4 flex items-end justify-between gap-4">
+            <div>
+              <p className="section-label mb-1">Transactions</p>
+              <h2 className="text-xl font-semibold tracking-tight">
+                Active projects
+              </h2>
+            </div>
+            <Link
+              href="/projects"
+              className="text-sm font-medium text-muted underline-offset-4 hover:text-ink hover:underline"
+            >
+              View all
             </Link>
-          )}
-        </div>
-      </div>
+          </div>
+          <div className="grid gap-3 lg:grid-cols-3">
+            {activeProjects.map((project) => {
+              const stages = project.project_stages ?? [];
+              const total = stages.length;
+              const done = stages.filter((s) => s.completed).length;
+              const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+              return (
+                <Link
+                  key={project.id}
+                  href={`/projects/${project.id}`}
+                  className="card-interactive block p-5"
+                >
+                  <h3 className="font-semibold tracking-tight">{project.name}</h3>
+                  <div className="mt-4">
+                    <div className="mb-1.5 flex justify-between text-xs text-muted">
+                      <span>
+                        {done}/{total} phases
+                      </span>
+                      <span>{pct}%</span>
+                    </div>
+                    <div className="progress-track">
+                      <div
+                        className="progress-fill"
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       <section>
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-xl font-semibold tracking-tight">Latest news</h2>
+        <div className="mb-4 flex items-end justify-between gap-4">
+          <div>
+            <p className="section-label mb-1">Newsletter</p>
+            <h2 className="text-xl font-semibold tracking-tight">Latest news</h2>
+          </div>
           <Link
             href="/news"
-            className="text-sm font-medium text-accent underline-offset-4 hover:underline"
+            className="text-sm font-medium text-muted underline-offset-4 hover:text-ink hover:underline"
           >
             View all
           </Link>
@@ -144,29 +209,37 @@ export default async function DashboardPage() {
               <Link
                 key={post.id}
                 href={`/news/${post.id}`}
-                className="card block p-5 transition hover:border-line-strong"
+                className="card-interactive block p-5 sm:p-6"
               >
-                <p className="font-mono text-xs text-muted">
+                <p className="text-xs text-muted">
                   {new Date(post.created_at).toLocaleDateString("en-GB", {
                     day: "numeric",
                     month: "long",
                     year: "numeric",
                   })}
                 </p>
-                <h3 className="mt-1.5 text-lg font-semibold tracking-tight">
+                <h3 className="mt-2 text-lg font-semibold tracking-tight">
                   {post.title}
                 </h3>
-                <p className="mt-1 line-clamp-2 text-sm text-muted">{post.body}</p>
+                <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted">
+                  {post.body}
+                </p>
               </Link>
             ))}
           </div>
         ) : (
-          <div className="card p-10 text-center">
-            <p className="text-sm font-medium">No updates yet</p>
-            <p className="mx-auto mt-1 max-w-xs text-sm text-muted">
-              When news is posted for the consortium, it shows up here.
-            </p>
-          </div>
+          <EmptyState
+            icon={Newspaper}
+            title="No updates yet"
+            description="When news is posted for the consortium, it shows up here."
+            action={
+              isAdmin ? (
+                <Link href="/news/new" className="btn-primary">
+                  <Plus size={16} /> Post the first update
+                </Link>
+              ) : undefined
+            }
+          />
         )}
       </section>
     </div>

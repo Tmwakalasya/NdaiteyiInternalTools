@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import { LogoMark } from "@/components/Logo";
 import { createClient } from "@/lib/supabase/client";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { site } from "@/lib/config";
 
 const links = [
@@ -53,38 +52,23 @@ export function Sidebar({ email, isAdmin }: { email: string; isAdmin: boolean })
   }) {
     const active = exact ? pathname === href : pathname.startsWith(href);
     return (
-      <Link
-        href={href}
-        className={`relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition ${
-          active
-            ? "bg-ink/[0.06] font-medium text-ink"
-            : "text-muted hover:bg-ink/[0.04] hover:text-ink"
-        }`}
-      >
-        {active && (
-          <span className="absolute -left-3 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-full bg-ink" />
-        )}
-        <Icon size={17} strokeWidth={2} />
+      <Link href={href} className={`nav-link ${active ? "nav-active" : ""}`}>
+        <Icon size={17} strokeWidth={1.75} />
         {label}
       </Link>
     );
   }
 
   return (
-    <aside className="sticky top-0 z-10 flex h-screen w-64 shrink-0 flex-col border-r border-line bg-card px-4 py-5">
-      <Link href="/dashboard" className="flex items-center gap-2.5 px-2">
-        <LogoMark className="h-8 w-8 shrink-0" />
-        <span className="min-w-0">
-          <span className="block truncate text-[15px] font-semibold tracking-tight">
-            {site.shortName}
-          </span>
-          <span className="block font-mono text-[9px] uppercase tracking-[0.18em] text-muted">
-            Mining Consortium
-          </span>
+    <aside className="sidebar-solid sticky top-0 z-10 flex h-screen w-64 shrink-0 flex-col px-3 py-5">
+      <Link href="/dashboard" className="flex items-center gap-2.5 px-3 py-2">
+        <LogoMark className="h-8 w-8 shrink-0 text-xs" />
+        <span className="min-w-0 truncate text-sm font-semibold leading-snug tracking-tight">
+          {site.name}
         </span>
       </Link>
 
-      <nav className="mt-8 flex flex-col gap-1">
+      <nav className="mt-6 flex flex-col gap-0.5">
         {links.map((link) => (
           <NavLink key={link.href} {...link} exact={link.href === "/dashboard"} />
         ))}
@@ -92,8 +76,8 @@ export function Sidebar({ email, isAdmin }: { email: string; isAdmin: boolean })
 
       {isAdmin && (
         <>
-          <p className="mono-label mt-8 px-3">Admin</p>
-          <nav className="mt-2 flex flex-col gap-1">
+          <p className="section-label mt-8 px-3">Admin</p>
+          <nav className="mt-2 flex flex-col gap-0.5">
             {adminLinks.map((link) => (
               <NavLink key={link.href} {...link} exact />
             ))}
@@ -101,26 +85,21 @@ export function Sidebar({ email, isAdmin }: { email: string; isAdmin: boolean })
         </>
       )}
 
-      <div className="mt-auto border-t border-line pt-4">
-        <div className="flex items-center gap-3 px-2">
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink text-sm font-semibold text-base">
+      <div className="mt-auto px-2 pt-4">
+        <div className="flex items-center gap-2.5 rounded-xl border border-white/[0.06] bg-white/[0.03] p-2.5">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 via-violet-500 to-pink-500 text-xs font-semibold text-white ring-2 ring-indigo-400/30 ring-offset-2 ring-offset-[#0d0d0f]">
             {email[0]?.toUpperCase()}
           </span>
           <div className="min-w-0 flex-1">
             <p className="truncate text-xs font-medium">{email}</p>
-            {isAdmin && (
-              <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-accent">
-                Admin
-              </p>
-            )}
+            {isAdmin && <p className="text-[11px] text-muted">Admin</p>}
           </div>
-          <ThemeToggle />
           <button
             onClick={signOut}
             title="Sign out"
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-muted transition hover:bg-ink/[0.05] hover:text-danger"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-muted transition hover:bg-white/[0.06] hover:text-danger"
           >
-            <LogOut size={16} />
+            <LogOut size={15} />
           </button>
         </div>
       </div>

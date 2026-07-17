@@ -1,4 +1,4 @@
-# Esinet Ndaiteyi Mining Consortium — Member Portal
+# ENM Mining Consortium — Member Portal
 
 An internal website for the consortium: a member directory your mom can manage
 herself, plus a news page and email newsletter. Built with Next.js (React),

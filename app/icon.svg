@@ -1,6 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#2b4bf2"/>
-  <path d="M32 14 L50 32 L32 50 L14 32 Z" fill="#ffffff"/>
-  <path d="M32 14 L50 32 L32 32 Z" fill="#ffffff" opacity="0.6"/>
-  <path d="M32 32 L32 50 L14 32 Z" fill="#dbe2ff" opacity="0.85"/>
+  <defs>
+    <linearGradient id="enm" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="50%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#enm)"/>
+  <text x="32" y="40" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="22" font-weight="700">ENM</text>
 </svg>
