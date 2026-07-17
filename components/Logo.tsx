@@ -1,4 +1,4 @@
-// The Esinet Ndaiteyi mark: mountain range + ore diamond on the accent tile.
+// The Esinet Ndaiteyi mark: the ore diamond on the accent tile.
 // Colors come from the theme variables, so it adapts to light/dark mode.
 export function LogoMark({ className }: { className?: string }) {
   return (
@@ -9,13 +9,9 @@ export function LogoMark({ className }: { className?: string }) {
       aria-label="Esinet Ndaiteyi logo"
     >
       <rect width="64" height="64" rx="14" fill="var(--color-accent)" />
-      <path d="M10 46 L25 21 L33.5 34.5 L40 24.5 L54 46 Z" fill="#ffffff" />
-      <path
-        d="M10 46 L25 21 L31 30.5 L22 46 Z"
-        fill="#ffffff"
-        opacity="0.72"
-      />
-      <path d="M47 12 L51.5 16.5 L47 21 L42.5 16.5 Z" fill="#ffffff" />
+      <path d="M32 14 L50 32 L32 50 L14 32 Z" fill="#ffffff" />
+      <path d="M32 14 L50 32 L32 32 Z" fill="#ffffff" opacity="0.6" />
+      <path d="M32 32 L32 50 L14 32 Z" fill="#ffffff" opacity="0.35" />
     </svg>
   );
 }

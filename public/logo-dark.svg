@@ -1,8 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 160" role="img" aria-label="Esinet Ndaiteyi Mining Consortium">
-  <rect x="28" y="32" width="96" height="96" rx="21" fill="#f56a49"/>
-  <path d="M43 101 L65.5 63.5 L78.25 83.75 L88 68.75 L109 101 Z" fill="#ffffff"/>
-  <path d="M43 101 L65.5 63.5 L74.5 77.75 L61 101 Z" fill="#ffffff" opacity="0.72"/>
-  <path d="M98.5 50 L105.25 56.75 L98.5 63.5 L91.75 56.75 Z" fill="#ffffff"/>
-  <text x="152" y="86" font-family="'Space Grotesk','Geist',Futura,'Helvetica Neue',Arial,sans-serif" font-size="44" font-weight="700" letter-spacing="-1" fill="#ededea">Esinet Ndaiteyi</text>
-  <text x="154" y="116" font-family="'Geist Mono','SF Mono',Menlo,monospace" font-size="16" font-weight="500" letter-spacing="7" fill="#9d9a92">MINING CONSORTIUM</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 190" role="img" aria-label="Esinet Ndaiteyi Mining Consortium">
+  <text x="40" y="96" font-family="'Poppins','Space Grotesk',Futura,'Century Gothic','Helvetica Neue',Arial,sans-serif" font-size="60" letter-spacing="-1.5" fill="#7288ff"><tspan font-style="italic" font-weight="500">Esinet</tspan><tspan font-weight="700" dx="14">Ndaiteyi</tspan></text>
+  <path d="M494 72 L507 85 L494 98 L481 85 Z" fill="#7288ff"/>
+  <text x="42" y="142" font-family="'Geist Mono','SF Mono',Menlo,monospace" font-size="16" font-weight="500" letter-spacing="7" fill="#9d9a92">MINING CONSORTIUM</text>
 </svg>
