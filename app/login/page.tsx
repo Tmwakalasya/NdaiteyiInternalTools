@@ -4,10 +4,9 @@ import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { LogoMark } from "@/components/Logo";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { GradientShell } from "@/components/GradientShell";
 import { site } from "@/lib/config";
 
-// True until the real Supabase keys are pasted into .env.local.
 const supabaseNotConfigured =
   !process.env.NEXT_PUBLIC_SUPABASE_URL ||
   process.env.NEXT_PUBLIC_SUPABASE_URL.includes("placeholder");
@@ -64,83 +63,80 @@ function LoginForm() {
   }
 
   return (
-    <main className="relative z-[1] flex flex-1 items-center justify-center p-6">
-      <div className="absolute right-5 top-5">
-        <ThemeToggle />
-      </div>
-      <div className="card w-full max-w-md p-8 sm:p-10">
-        <LogoMark className="mb-6 h-10 w-10" />
-        <p className="mono-label mb-3">Mining Consortium — Member portal</p>
-        <h1 className="text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
-          Esinet <span className="emph">Ndaiteyi</span>
-        </h1>
-        <p className="mt-2.5 text-sm text-muted">
-          {mode === "login"
-            ? "Sign in to continue."
-            : "We'll email you a link to set a new password."}
-        </p>
+    <GradientShell variant="hero">
+      <main className="relative z-[1] flex flex-1 flex-col items-center justify-center px-6 py-16">
+        <LogoMark className="mb-6 h-10 w-10 text-xs" />
 
-        {supabaseNotConfigured && (
-          <p className="mt-6 rounded-xl border border-accent/25 bg-accent/10 px-4 py-3 text-sm text-accent">
-            The site isn&rsquo;t connected to its database yet. Follow steps
-            1&ndash;4 in the README (create the Supabase project and paste its
-            keys into <span className="font-mono text-xs">.env.local</span>),
-            then signing in will work.
-          </p>
-        )}
-
-        <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-          <div>
-            <label className="label" htmlFor="email">
-              Email address
-            </label>
-            <input
-              id="email"
-              type="email"
-              className="input"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              required
-              autoComplete="email"
-            />
-          </div>
-
-          {mode === "login" && (
-            <div>
-              <label className="label" htmlFor="password">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                className="input"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                autoComplete="current-password"
-              />
-            </div>
+        <div className="text-center">
+          {mode === "login" ? (
+            <>
+              <p className="text-lg text-white/70">Sign in to</p>
+              <h1 className="display-title mt-1 text-white">
+                <span className="emph">{site.name}</span>
+              </h1>
+            </>
+          ) : (
+            <h1 className="display-title text-white">Reset your password</h1>
           )}
+          <p className="mt-3 text-[15px] text-white/45">
+            {mode === "login"
+              ? site.tagline
+              : "We'll email you a link to set a new password."}
+          </p>
+        </div>
 
-          {message && (
-            <p className="rounded-xl border border-line bg-base px-4 py-3 text-sm text-ink/80">
-              {message}
+        <div className="card-glass mt-6 w-full max-w-md p-3 sm:p-4">
+          {supabaseNotConfigured && (
+            <p className="mb-3 rounded-2xl border border-amber-400/20 bg-amber-500/10 px-4 py-3 text-sm text-amber-100/90">
+              The site isn&rsquo;t connected to its database yet. Follow steps
+              1&ndash;4 in the README, then signing in will work.
             </p>
           )}
 
-          <button type="submit" className="btn-primary w-full" disabled={busy}>
-            {busy
-              ? "One moment…"
-              : mode === "login"
-                ? "Sign in"
-                : "Email me the link"}
-          </button>
-        </form>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+            <input
+              id="email"
+              type="email"
+              className="input-glass"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email address"
+              required
+              autoComplete="email"
+            />
+
+            {mode === "login" && (
+              <input
+                id="password"
+                type="password"
+                className="input-glass"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                required
+                autoComplete="current-password"
+              />
+            )}
+
+            {message && (
+              <p className="rounded-2xl bg-white/5 px-4 py-3 text-sm text-white/75">
+                {message}
+              </p>
+            )}
+
+            <button type="submit" className="btn-primary-hero" disabled={busy}>
+              {busy
+                ? "One moment…"
+                : mode === "login"
+                  ? "Sign in"
+                  : "Email me the link"}
+            </button>
+          </form>
+        </div>
 
         <button
           type="button"
-          className="mt-5 w-full text-center text-sm text-muted underline-offset-4 transition hover:text-ink hover:underline"
+          className="mt-5 text-sm text-white/40 transition hover:text-white/70"
           onClick={() => {
             setMode(mode === "login" ? "reset" : "login");
             setMessage(null);
@@ -148,12 +144,8 @@ function LoginForm() {
         >
           {mode === "login" ? "Forgotten your password?" : "Back to sign in"}
         </button>
-
-        <p className="mono-label mt-10 text-center opacity-70">
-          {site.tagline}
-        </p>
-      </div>
-    </main>
+      </main>
+    </GradientShell>
   );
 }
 

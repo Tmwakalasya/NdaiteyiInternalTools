@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
-  ArrowLeft,
   Building2,
   Briefcase,
   ClipboardList,
@@ -13,6 +12,7 @@ import {
 import { createClient } from "@/lib/supabase/server";
 import { getSessionProfile } from "@/lib/auth";
 import { Avatar } from "@/components/Avatar";
+import { BackLink } from "@/components/BackLink";
 import { MemberAdminActions } from "@/components/MemberAdminActions";
 import { MemberDocuments } from "@/components/MemberDocuments";
 import type { Member, MemberDocument } from "@/lib/types";
@@ -50,19 +50,14 @@ export default async function MemberPage({
   ].filter((f) => f.value);
 
   return (
-    <div className="space-y-6">
-      <Link
-        href="/members"
-        className="inline-flex items-center gap-2 text-sm font-medium text-muted transition hover:text-ink"
-      >
-        <ArrowLeft size={16} /> All members
-      </Link>
+    <div className="space-y-8">
+      <BackLink href="/members">All members</BackLink>
 
       <div className="card p-6 sm:p-8">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
           <Avatar name={member.full_name} photoUrl={member.photo_url} size="lg" />
           <div className="min-w-0 flex-1">
-            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+            <h1 className="display-title text-3xl sm:text-4xl">
               {member.full_name}
             </h1>
             {member.title && <p className="mt-2 text-muted">{member.title}</p>}

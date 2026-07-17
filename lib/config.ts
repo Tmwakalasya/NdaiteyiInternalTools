@@ -1,8 +1,8 @@
 // Site-wide settings — change the name here and it updates everywhere.
 export const site = {
-  name: "Esinet Ndaiteyi Mining Consortium",
-  shortName: "Esinet Ndaiteyi",
-  tagline: "Member portal & news",
+  name: "ENM Mining Consortium",
+  shortName: "ENM",
+  tagline: "Member portal",
 };
 
 // Schedule 1 — Consortium Members Register: the due-diligence documents each

@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { KeyRound } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { LogoMark } from "@/components/Logo";
+import { GradientShell } from "@/components/GradientShell";
 import { site } from "@/lib/config";
 
-// People land here from an invite or password-reset email link.
 export default function SetPasswordPage() {
   const router = useRouter();
   const [password, setPassword] = useState("");
@@ -45,69 +45,61 @@ export default function SetPasswordPage() {
   }
 
   return (
-    <main className="relative z-[1] flex flex-1 items-center justify-center p-6">
-      <div className="card w-full max-w-md p-8 sm:p-10">
-        <span className="mb-6 flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-white">
-          <KeyRound size={18} strokeWidth={2.25} />
-        </span>
-        <p className="mono-label mb-3">{site.shortName}</p>
-        <h1 className="text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
-          Choose a <span className="emph">password</span>
-        </h1>
+    <GradientShell variant="hero">
+      <main className="relative z-[1] flex flex-1 flex-col items-center justify-center px-6 py-16">
+        <LogoMark className="mb-6 h-10 w-10 text-xs" />
 
-        {hasSession === false ? (
-          <p className="mt-6 rounded-xl border border-accent/25 bg-accent/10 px-4 py-3 text-sm text-accent">
-            This link has expired or was already used. Please go back to the
-            sign-in page and choose &ldquo;Forgotten your password?&rdquo; to
-            get a fresh one.
-          </p>
-        ) : (
-          <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-            <div>
-              <label className="label" htmlFor="password">
-                New password
-              </label>
+        <div className="text-center">
+          <p className="text-lg text-white/70">{site.shortName}</p>
+          <h1 className="display-title mt-1 text-white">Choose a password</h1>
+        </div>
+
+        <div className="card-glass mt-6 w-full max-w-md p-3 sm:p-4">
+          {hasSession === false ? (
+            <p className="rounded-2xl border border-amber-400/20 bg-amber-500/10 px-4 py-3 text-sm text-amber-100/90">
+              This link has expired or was already used. Go back to sign in and
+              choose &ldquo;Forgotten your password?&rdquo; to get a fresh one.
+            </p>
+          ) : (
+            <form onSubmit={handleSubmit} className="flex flex-col gap-2">
               <input
                 id="password"
                 type="password"
-                className="input"
+                className="input-glass"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                placeholder="New password"
                 required
                 autoComplete="new-password"
               />
-            </div>
-            <div>
-              <label className="label" htmlFor="confirm">
-                Type it again
-              </label>
               <input
                 id="confirm"
                 type="password"
-                className="input"
+                className="input-glass"
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
+                placeholder="Confirm password"
                 required
                 autoComplete="new-password"
               />
-            </div>
 
-            {message && (
-              <p className="rounded-xl border border-line bg-base px-4 py-3 text-sm text-ink/80">
-                {message}
-              </p>
-            )}
+              {message && (
+                <p className="rounded-2xl bg-white/5 px-4 py-3 text-sm text-white/75">
+                  {message}
+                </p>
+              )}
 
-            <button
-              type="submit"
-              className="btn-primary w-full"
-              disabled={busy || hasSession === null}
-            >
-              {busy ? "Saving…" : "Save password and continue"}
-            </button>
-          </form>
-        )}
-      </div>
-    </main>
+              <button
+                type="submit"
+                className="btn-primary-hero"
+                disabled={busy || hasSession === null}
+              >
+                {busy ? "Saving…" : "Save and continue"}
+              </button>
+            </form>
+          )}
+        </div>
+      </main>
+    </GradientShell>
   );
 }

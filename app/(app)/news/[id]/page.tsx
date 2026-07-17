@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getSessionProfile } from "@/lib/auth";
+import { BackLink } from "@/components/BackLink";
 import { NewsAdminActions } from "@/components/NewsAdminActions";
 import type { NewsPost } from "@/lib/types";
 
@@ -24,14 +24,9 @@ export default async function NewsPostPage({
   if (!post) notFound();
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
+    <div className="mx-auto max-w-2xl space-y-8">
       <div className="flex items-center justify-between gap-4">
-        <Link
-          href="/news"
-          className="inline-flex items-center gap-2 text-sm font-medium text-muted transition hover:text-ink"
-        >
-          <ArrowLeft size={16} /> All news
-        </Link>
+        <BackLink href="/news">All news</BackLink>
         {isAdmin && <NewsAdminActions post={post} />}
       </div>
 

@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Layers, Plus } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { EmptyState } from "@/components/EmptyState";
+import { PageHeader } from "@/components/PageHeader";
 import type { Project } from "@/lib/types";
 
 type ProjectWithStages = Project & {
@@ -8,10 +10,9 @@ type ProjectWithStages = Project & {
 };
 
 const statusStyles: Record<Project["status"], string> = {
-  active: "border-accent/20 bg-accent/10 text-accent",
-  on_hold: "border-line-strong bg-base text-muted",
-  completed:
-    "border-emerald-600/20 bg-emerald-600/10 text-emerald-700 dark:border-emerald-400/25 dark:bg-emerald-400/10 dark:text-emerald-400",
+  active: "border-white/10 bg-white/[0.06] text-ink",
+  on_hold: "border-line bg-white/[0.03] text-muted",
+  completed: "border-emerald-400/20 bg-emerald-500/10 text-emerald-400",
 };
 
 const statusLabel: Record<Project["status"], string> = {
@@ -29,24 +30,20 @@ export default async function ProjectsPage() {
     .returns<ProjectWithStages[]>();
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="mono-label mb-3">Transactions</p>
-          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-            Projects
-          </h1>
-          <p className="mt-3 text-muted">
-            Track each deal through the SEZ Africa engagement phases.
-          </p>
-        </div>
-        <Link href="/projects/new" className="btn-primary">
-          <Plus size={16} /> New project
-        </Link>
-      </div>
+    <div className="space-y-8">
+      <PageHeader
+        eyebrow="Transactions"
+        title="Projects"
+        description="Track each deal through the SEZ Africa engagement phases."
+        action={
+          <Link href="/projects/new" className="btn-primary">
+            <Plus size={16} /> New project
+          </Link>
+        }
+      />
 
       {projects && projects.length > 0 ? (
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 lg:grid-cols-2">
           {projects.map((project) => {
             const stages = project.project_stages ?? [];
             const total = stages.length;
@@ -56,10 +53,10 @@ export default async function ProjectsPage() {
               <Link
                 key={project.id}
                 href={`/projects/${project.id}`}
-                className="card group flex flex-col p-6 transition hover:border-line-strong"
+                className="card-interactive group flex flex-col p-6"
               >
                 <div className="flex items-start justify-between gap-3">
-                  <h2 className="text-lg font-semibold leading-snug tracking-tight transition group-hover:text-accent">
+                  <h2 className="text-lg font-semibold leading-snug tracking-tight transition group-hover:text-ink">
                     {project.name}
                   </h2>
                   <span
@@ -69,22 +66,19 @@ export default async function ProjectsPage() {
                   </span>
                 </div>
                 {project.description && (
-                  <p className="mt-2 line-clamp-2 text-sm text-muted">
+                  <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-muted">
                     {project.description}
                   </p>
                 )}
-                <div className="mt-auto pt-5">
-                  <div className="mb-1.5 flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.16em] text-muted">
+                <div className="mt-auto pt-6">
+                  <div className="mb-2 flex items-center justify-between font-mono text-[11px] tracking-[0.12em] text-muted uppercase">
                     <span>
                       {done} / {total} phases
                     </span>
                     <span>{pct}%</span>
                   </div>
-                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-line">
-                    <div
-                      className="h-full rounded-full bg-accent transition-all"
-                      style={{ width: `${pct}%` }}
-                    />
+                  <div className="progress-track">
+                    <div className="progress-fill" style={{ width: `${pct}%` }} />
                   </div>
                 </div>
               </Link>
@@ -92,19 +86,16 @@ export default async function ProjectsPage() {
           })}
         </div>
       ) : (
-        <div className="card p-10 text-center">
-          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-line bg-base text-muted">
-            <Layers size={22} />
-          </span>
-          <p className="mt-4 text-sm font-medium">No projects yet</p>
-          <p className="mx-auto mt-1 max-w-sm text-sm text-muted">
-            Add a project to start tracking a transaction through the SEZ Africa
-            phases.
-          </p>
-          <Link href="/projects/new" className="btn-primary mt-5">
-            <Plus size={15} /> New project
-          </Link>
-        </div>
+        <EmptyState
+          icon={Layers}
+          title="No projects yet"
+          description="Add a project to start tracking a transaction through the SEZ Africa phases."
+          action={
+            <Link href="/projects/new" className="btn-primary">
+              <Plus size={15} /> New project
+            </Link>
+          }
+        />
       )}
     </div>
   );

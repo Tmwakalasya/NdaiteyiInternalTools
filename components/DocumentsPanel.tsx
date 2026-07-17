@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Download, FileText, Trash2, Upload } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { EmptyState } from "@/components/EmptyState";
 import type { Document } from "@/lib/types";
 
 type ProjectRef = { id: string; name: string };
@@ -173,17 +174,17 @@ export function DocumentsPanel({
 
       {/* List */}
       {docs.length > 0 ? (
-        <ul className="card divide-y divide-line">
+        <ul className="card divide-y divide-line overflow-hidden">
           {docs.map((doc) => {
             const projectName =
               projects.find((p) => p.id === doc.project_id)?.name ?? null;
             return (
-              <li key={doc.id} className="flex items-center gap-4 p-4">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-line bg-base text-muted">
+              <li key={doc.id} className="document-row">
+                <span className="icon-tile h-10 w-10 shrink-0">
                   <FileText size={18} />
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium">{doc.name}</p>
+                  <p className="truncate text-sm font-semibold">{doc.name}</p>
                   <p className="truncate font-mono text-xs text-muted">
                     {[
                       formatBytes(doc.size_bytes),
@@ -201,14 +202,14 @@ export function DocumentsPanel({
                 <button
                   onClick={() => download(doc)}
                   title="Download"
-                  className="flex h-9 w-9 items-center justify-center rounded-full text-muted transition hover:bg-base hover:text-ink"
+                  className="flex h-9 w-9 items-center justify-center rounded-xl text-muted transition hover:bg-white/[0.06] hover:text-ink"
                 >
                   <Download size={17} />
                 </button>
                 <button
                   onClick={() => remove(doc)}
                   title="Delete"
-                  className="flex h-9 w-9 items-center justify-center rounded-full text-muted transition hover:bg-danger/10 hover:text-danger"
+                  className="flex h-9 w-9 items-center justify-center rounded-xl text-muted transition hover:bg-danger/10 hover:text-danger"
                 >
                   <Trash2 size={16} />
                 </button>
@@ -217,9 +218,11 @@ export function DocumentsPanel({
           })}
         </ul>
       ) : (
-        <div className="card p-8 text-center text-sm text-muted">
-          No files uploaded yet.
-        </div>
+        <EmptyState
+          icon={FileText}
+          title="No files uploaded yet"
+          description="Upload a document to share it with consortium members."
+        />
       )}
     </div>
   );

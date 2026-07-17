@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 
-// Shows the member's photo, or their initials on a soft accent tint.
 export function Avatar({
   name,
   photoUrl,
@@ -19,22 +18,25 @@ export function Avatar({
 
   const classes =
     size === "lg"
-      ? "h-24 w-24 rounded-3xl text-2xl"
-      : "h-14 w-14 rounded-2xl text-lg";
+      ? "h-20 w-20 rounded-2xl text-xl"
+      : "h-12 w-12 rounded-xl text-sm";
+
+  const ring =
+    "ring-2 ring-indigo-400/40 ring-offset-2 ring-offset-[#141418]";
 
   if (photoUrl) {
     return (
       <img
         src={photoUrl}
         alt={name}
-        className={`${classes} shrink-0 border border-line object-cover`}
+        className={`${classes} ${ring} shrink-0 border border-line object-cover`}
       />
     );
   }
 
   return (
     <div
-      className={`${classes} flex shrink-0 items-center justify-center border border-accent/15 bg-accent/10 font-semibold text-accent`}
+      className={`${classes} ${ring} flex shrink-0 items-center justify-center bg-gradient-to-br from-indigo-500/30 via-violet-500/20 to-pink-500/20 font-medium text-ink`}
     >
       {initials}
     </div>

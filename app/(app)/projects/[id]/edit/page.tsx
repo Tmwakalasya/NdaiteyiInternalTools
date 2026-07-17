@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { BackLink } from "@/components/BackLink";
+import { PageHeader } from "@/components/PageHeader";
 import { ProjectForm } from "@/components/ProjectForm";
 import type { Project } from "@/lib/types";
 
@@ -21,16 +21,9 @@ export default async function EditProjectPage({
   if (!project) notFound();
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
-      <Link
-        href={`/projects/${id}`}
-        className="inline-flex items-center gap-2 text-sm font-medium text-muted transition hover:text-ink"
-      >
-        <ArrowLeft size={16} /> Back to project
-      </Link>
-      <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-        Edit project
-      </h1>
+    <div className="mx-auto max-w-2xl space-y-8">
+      <BackLink href={`/projects/${id}`}>Back to project</BackLink>
+      <PageHeader eyebrow="Transactions" title="Edit project" />
       <ProjectForm project={project} />
     </div>
   );
