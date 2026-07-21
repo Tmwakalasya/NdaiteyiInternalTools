@@ -10,9 +10,9 @@ type ProjectWithStages = Project & {
 };
 
 const statusStyles: Record<Project["status"], string> = {
-  active: "border-white/10 bg-white/[0.06] text-ink",
-  on_hold: "border-line bg-white/[0.03] text-muted",
-  completed: "border-emerald-400/20 bg-emerald-500/10 text-emerald-400",
+  active: "border-indigo-200 bg-indigo-50 text-indigo-700",
+  on_hold: "border-line bg-panel text-muted",
+  completed: "border-emerald-200 bg-emerald-50 text-emerald-700",
 };
 
 const statusLabel: Record<Project["status"], string> = {

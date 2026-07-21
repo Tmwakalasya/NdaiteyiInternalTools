@@ -22,7 +22,7 @@ export function Avatar({
       : "h-12 w-12 rounded-xl text-sm";
 
   const ring =
-    "ring-2 ring-indigo-400/40 ring-offset-2 ring-offset-[#141418]";
+    "ring-2 ring-indigo-200 ring-offset-2 ring-offset-surface";
 
   if (photoUrl) {
     return (
@@ -36,7 +36,7 @@ export function Avatar({
 
   return (
     <div
-      className={`${classes} ${ring} flex shrink-0 items-center justify-center bg-gradient-to-br from-indigo-500/30 via-violet-500/20 to-pink-500/20 font-medium text-ink`}
+      className={`${classes} ${ring} flex shrink-0 items-center justify-center bg-gradient-to-br from-indigo-100 via-violet-50 to-pink-50 font-medium text-indigo-700`}
     >
       {initials}
     </div>

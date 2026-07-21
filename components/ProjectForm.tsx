@@ -73,7 +73,7 @@ export function ProjectForm({ project }: { project?: Project }) {
         </label>
         <textarea
           id="description"
-          className="input min-h-28"
+          className="textarea min-h-28"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Commodity, parties involved, and any notes about this deal…"

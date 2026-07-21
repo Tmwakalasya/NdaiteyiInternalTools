@@ -1,8 +1,20 @@
 import Link from "next/link";
-import { FileText, Layers, Newspaper, Plus, Users } from "lucide-react";
+import {
+  FileText,
+  Layers,
+  Newspaper,
+  Plus,
+  ShieldCheck,
+  Users,
+} from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { ActivityFeed } from "@/components/ActivityFeed";
 import { EmptyState } from "@/components/EmptyState";
 import { StatCard } from "@/components/StatCard";
+import {
+  complianceSummary,
+  getComplianceOverview,
+} from "@/lib/compliance";
 import { site } from "@/lib/config";
 import type { NewsPost, Profile, Project } from "@/lib/types";
 
@@ -31,6 +43,7 @@ export default async function DashboardPage() {
     { data: latestNews },
     { data: profile },
     { data: activeProjects },
+    { data: recentMembers },
   ] = await Promise.all([
     supabase.from("members").select("*", { count: "exact", head: true }),
     supabase.from("projects").select("*", { count: "exact", head: true }),
@@ -50,6 +63,11 @@ export default async function DashboardPage() {
       .order("created_at", { ascending: false })
       .limit(3)
       .returns<ProjectWithStages[]>(),
+    supabase
+      .from("members")
+      .select("id, full_name, photo_url")
+      .order("created_at", { ascending: false })
+      .limit(6),
   ]);
 
   const isAdmin = profile?.role === "admin";
@@ -59,6 +77,10 @@ export default async function DashboardPage() {
     day: "numeric",
     month: "long",
   });
+
+  const compliance = isAdmin
+    ? complianceSummary(await getComplianceOverview(supabase))
+    : null;
 
   const members = memberCount ?? 0;
   const projects = projectCount ?? 0;
@@ -103,22 +125,24 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-8">
       <div className="hero-band">
-        <div className="relative z-[1]">
-          <p className="section-label">{today}</p>
-          <h1 className="display-title mt-2 text-3xl sm:text-4xl">
-            {greeting()}
-            {firstName ? (
-              <>
-                , <span className="emph">{firstName}</span>
-              </>
-            ) : (
-              ""
-            )}
-          </h1>
-          <p className="mt-2 text-sm text-muted">
-            {site.name} — {site.tagline}
-          </p>
-          <div className="mt-5 flex flex-wrap gap-2">
+        <div className="relative z-[1] flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p className="section-label">{today}</p>
+            <h1 className="display-title mt-2 text-3xl sm:text-4xl">
+              {greeting()}
+              {firstName ? (
+                <>
+                  , <span className="emph">{firstName}</span>
+                </>
+              ) : (
+                ""
+              )}
+            </h1>
+            <p className="mt-2 text-sm text-muted">
+              {site.name} — {site.tagline}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
             <Link href="/projects/new" className="btn-primary">
               <Plus size={15} /> New project
             </Link>
@@ -134,10 +158,81 @@ export default async function DashboardPage() {
         </div>
       </div>
 
+      {isAdmin && compliance && (
+        <div className="hero-metric flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <p className="section-label text-white/55">Schedule 1 compliance</p>
+            <p className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+              {compliance.averagePercent}%
+            </p>
+            <p className="mt-2 text-sm text-white/55">
+              {compliance.fullyCompliant} of {compliance.total} members fully
+              compliant · {compliance.incomplete} incomplete
+            </p>
+          </div>
+          <Link href="/compliance" className="btn-secondary !border-white/15 !bg-white/10 !text-white hover:!bg-white/15">
+            <ShieldCheck size={15} /> View compliance
+          </Link>
+        </div>
+      )}
+
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {stats.map((stat) => (
           <StatCard key={stat.href} {...stat} />
         ))}
+      </div>
+
+      <div className="grid gap-6 xl:grid-cols-3">
+        <section className="xl:col-span-2">
+          <div className="mb-4">
+            <p className="section-label mb-1">Portal</p>
+            <h2 className="text-xl font-semibold tracking-tight">
+              Recent activity
+            </h2>
+          </div>
+          <ActivityFeed />
+        </section>
+
+        <section>
+          <div className="mb-4">
+            <p className="section-label mb-1">Network</p>
+            <h2 className="text-xl font-semibold tracking-tight">Members</h2>
+          </div>
+          <div className="card p-5">
+            {recentMembers && recentMembers.length > 0 ? (
+              <div className="flex flex-wrap gap-2">
+                {recentMembers.map((member) => (
+                  <Link
+                    key={member.id}
+                    href={`/members/${member.id}`}
+                    title={member.full_name}
+                    className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-indigo-100 to-violet-100 text-xs font-semibold text-indigo-700 ring-2 ring-white transition hover:scale-105"
+                  >
+                    {member.full_name
+                      .split(/\s+/)
+                      .slice(0, 2)
+                      .map((p: string) => p[0]?.toUpperCase())
+                      .join("")}
+                  </Link>
+                ))}
+                <Link
+                  href="/members"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-dashed border-line text-muted transition hover:border-line-strong hover:text-ink"
+                >
+                  <Plus size={16} />
+                </Link>
+              </div>
+            ) : (
+              <p className="text-sm text-muted">No members yet.</p>
+            )}
+            <Link
+              href="/members"
+              className="mt-4 inline-block text-sm font-medium text-muted underline-offset-4 hover:text-ink hover:underline"
+            >
+              View directory
+            </Link>
+          </div>
+        </section>
       </div>
 
       {activeProjects && activeProjects.length > 0 && (

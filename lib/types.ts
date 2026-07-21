@@ -91,3 +91,58 @@ export type MemberDocument = {
   uploaded_by: string | null;
   created_at: string;
 };
+
+export type ActivityType =
+  | "news_post"
+  | "project_created"
+  | "document_uploaded"
+  | "member_document_uploaded"
+  | "stage_completed"
+  | "member_added";
+
+export type ActivityItem = {
+  id: string;
+  type: ActivityType;
+  summary: string;
+  href: string;
+  actorId: string | null;
+  actorName?: string;
+  occurredAt: string;
+};
+
+export type SearchResultItem = {
+  id: string;
+  title: string;
+  subtitle?: string;
+  href: string;
+};
+
+export type SearchResults = {
+  members: SearchResultItem[];
+  projects: SearchResultItem[];
+  documents: SearchResultItem[];
+  news: SearchResultItem[];
+};
+
+export type MemberCompliance = {
+  memberId: string;
+  fullName: string;
+  organisation: string | null;
+  country: string | null;
+  providedCount: number;
+  totalRequired: number;
+  percent: number;
+  missing: { key: string; label: string }[];
+};
+
+export type Notification = {
+  id: string;
+  user_id: string;
+  type: string;
+  title: string;
+  body: string | null;
+  href: string | null;
+  entity_key: string;
+  read_at: string | null;
+  created_at: string;
+};
