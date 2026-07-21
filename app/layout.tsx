@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { DM_Mono, Inter } from "next/font/google";
 import { site } from "@/lib/config";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
@@ -8,6 +8,12 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+});
+
+const dmMono = DM_Mono({
+  variable: "--font-dm-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -24,7 +30,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} dark h-full`}
+      className={`${inter.variable} ${dmMono.variable} h-full`}
     >
       <body className="flex min-h-full flex-col">
         <ThemeProvider>{children}</ThemeProvider>

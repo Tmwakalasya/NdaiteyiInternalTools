@@ -15,7 +15,7 @@ export function PageHeader({
         {eyebrow && <p className="section-label mb-2">{eyebrow}</p>}
         <h1 className="display-title">{title}</h1>
         {description && (
-          <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted">
+          <p className="mt-3 max-w-2xl text-[15px] font-normal leading-relaxed text-muted">
             {description}
           </p>
         )}

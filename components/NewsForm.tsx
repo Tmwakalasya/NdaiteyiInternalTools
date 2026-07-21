@@ -82,7 +82,7 @@ export function NewsForm({ post }: { post?: NewsPost }) {
         </label>
         <textarea
           id="body"
-          className="input min-h-52"
+          className="textarea min-h-52"
           value={body}
           onChange={(e) => setBody(e.target.value)}
           required

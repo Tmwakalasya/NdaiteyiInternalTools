@@ -211,7 +211,7 @@ export function MemberForm({ member }: { member?: Member }) {
           </label>
           <textarea
             id="bio"
-            className="input min-h-32"
+            className="textarea min-h-32"
             value={form.bio}
             onChange={set("bio")}
             placeholder="A few sentences about this person's background…"
@@ -224,7 +224,7 @@ export function MemberForm({ member }: { member?: Member }) {
           </label>
           <textarea
             id="responsibilities"
-            className="input min-h-20"
+            className="textarea min-h-20"
             value={form.responsibilities}
             onChange={set("responsibilities")}
           />
