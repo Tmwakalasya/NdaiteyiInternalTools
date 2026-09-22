@@ -13,7 +13,7 @@ export function EmptyState({
 }) {
   return (
     <div className="card flex flex-col items-center px-6 py-14 text-center">
-      <span className="icon-tile-accent mx-auto h-14 w-14 rounded-2xl">
+      <span className="icon-tile-accent mx-auto">
         <Icon size={24} strokeWidth={1.75} />
       </span>
       <p className="mt-5 text-base font-semibold">{title}</p>

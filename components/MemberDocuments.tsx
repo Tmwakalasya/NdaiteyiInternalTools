@@ -126,7 +126,7 @@ export function MemberDocuments({
 
   function FileRow({ doc }: { doc: MemberDocument }) {
     return (
-      <div className="flex items-center gap-3 rounded-xl border border-line bg-base px-3 py-2">
+      <div className="flex items-center gap-3 rounded-[4px] border border-line bg-canvas px-3 py-2">
         <FileText size={15} className="shrink-0 text-muted" />
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm">{doc.file_name}</p>
@@ -197,7 +197,7 @@ export function MemberDocuments({
       </div>
 
       {error && (
-        <p className="mt-4 rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger">
+        <p className="mt-4 rounded-[4px] bg-danger/10 px-4 py-3 text-sm text-danger">
           {error}
         </p>
       )}

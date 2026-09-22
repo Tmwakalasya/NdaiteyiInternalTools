@@ -1,8 +1,8 @@
-// ENM mark — soft gradient tile, Lovable-style.
+// ENM mark — a rust tile, matching the homepage accent.
 export function LogoMark({ className }: { className?: string }) {
   return (
     <div
-      className={`flex shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 via-violet-500 to-pink-500 ${className ?? ""}`}
+      className={`flex shrink-0 items-center justify-center rounded-[4px] bg-rust ${className ?? ""}`}
       role="img"
       aria-label="ENM Mining Consortium logo"
     >
@@ -15,9 +15,9 @@ export function LogoMark({ className }: { className?: string }) {
 
 export function LogoWordmark({ className }: { className?: string }) {
   return (
-    <span className={className}>
-      <span className="font-semibold">ENM</span>
-      <span className="text-muted"> Mining Consortium</span>
+    <span className={`tracking-[-0.03em] ${className ?? ""}`}>
+      <span className="font-semibold">enm</span>
+      <span className="opacity-55">consortium</span>
     </span>
   );
 }

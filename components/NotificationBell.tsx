@@ -127,7 +127,7 @@ export function NotificationBell() {
       <div
         ref={panelRef}
         style={{ top: panelStyle.top, left: panelStyle.left, width: PANEL_WIDTH }}
-        className="fixed z-[100] overflow-hidden rounded-2xl border border-line bg-surface shadow-[0_20px_60px_rgba(0,0,0,0.15)]"
+        className="fixed z-[100] overflow-hidden rounded-[4px] border border-line bg-surface shadow-[0_20px_60px_rgba(0,0,0,0.25)]"
       >
         <div className="flex items-center justify-between border-b border-line px-4 py-3">
           <p className="text-sm font-semibold">Notifications</p>
@@ -157,7 +157,7 @@ export function NotificationBell() {
             <div
               key={n.id}
               className={`border-b border-line px-4 py-3 last:border-b-0 ${
-                n.read_at ? "opacity-60" : "bg-indigo-50/50"
+                n.read_at ? "opacity-60" : "bg-rust/[0.04]"
               }`}
             >
               {n.href ? (
@@ -209,14 +209,14 @@ export function NotificationBell() {
             return next;
           });
         }}
-        className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line bg-surface text-ink transition hover:bg-panel"
+        className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 text-white/70 transition hover:bg-white/[0.06] hover:text-white"
         title="Notifications"
         aria-expanded={open}
         aria-haspopup="true"
       >
         <Bell size={18} strokeWidth={1.75} />
         {unread > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-semibold text-white">
+          <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-rust px-1 text-[10px] font-semibold text-white">
             {unread > 9 ? "9+" : unread}
           </span>
         )}

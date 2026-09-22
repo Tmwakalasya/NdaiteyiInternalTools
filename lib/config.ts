@@ -3,6 +3,9 @@ export const site = {
   name: "ENM Mining Consortium",
   shortName: "ENM",
   tagline: "Member portal",
+  // Public homepage. Leave contactEmail empty to hide the email link.
+  publicTagline: "A pan-African consortium for verified, protected mineral trade.",
+  contactEmail: "",
 };
 
 // Schedule 1 — Consortium Members Register: the due-diligence documents each

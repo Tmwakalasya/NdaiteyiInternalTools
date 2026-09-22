@@ -204,7 +204,7 @@ export function StageTracker({
                   </div>
                   <div className="flex items-center gap-2">
                     {isCurrent && (
-                      <span className="badge shrink-0">Current phase</span>
+                      <span className="badge-accent shrink-0">Current phase</span>
                     )}
                     <button
                       onClick={() => deleteStage(stage.id)}

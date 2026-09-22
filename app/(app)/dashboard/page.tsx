@@ -1,5 +1,6 @@
 import Link from "next/link";
 import {
+  ArrowUpRight,
   FileText,
   Layers,
   Newspaper,
@@ -10,7 +11,6 @@ import {
 import { createClient } from "@/lib/supabase/server";
 import { ActivityFeed } from "@/components/ActivityFeed";
 import { EmptyState } from "@/components/EmptyState";
-import { StatCard } from "@/components/StatCard";
 import {
   complianceSummary,
   getComplianceOverview,
@@ -94,7 +94,6 @@ export default async function DashboardPage() {
       count: members,
       detail: members === 1 ? "1 registered" : `${members} registered`,
       icon: Users,
-      variant: "indigo" as const,
     },
     {
       href: "/projects",
@@ -102,7 +101,6 @@ export default async function DashboardPage() {
       count: projects,
       detail: projects === 1 ? "1 transaction" : `${projects} transactions`,
       icon: Layers,
-      variant: "violet" as const,
     },
     {
       href: "/documents",
@@ -110,7 +108,6 @@ export default async function DashboardPage() {
       count: docs,
       detail: docs === 1 ? "1 file shared" : `${docs} files shared`,
       icon: FileText,
-      variant: "slate" as const,
     },
     {
       href: "/news",
@@ -118,68 +115,114 @@ export default async function DashboardPage() {
       count: news,
       detail: news === 1 ? "1 post" : `${news} posts`,
       icon: Newspaper,
-      variant: "rose" as const,
     },
   ];
 
   return (
-    <div className="space-y-8">
-      <div className="hero-band">
-        <div className="relative z-[1] flex flex-wrap items-start justify-between gap-6">
-          <div>
-            <p className="section-label">{today}</p>
-            <h1 className="display-title mt-2 text-3xl sm:text-4xl">
-              {greeting()}
-              {firstName ? (
-                <>
-                  , <span className="emph">{firstName}</span>
-                </>
-              ) : (
-                ""
-              )}
-            </h1>
-            <p className="mt-2 text-sm text-muted">
-              {site.name} — {site.tagline}
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <Link href="/projects/new" className="btn-primary">
-              <Plus size={15} /> New project
+    <div className="space-y-10">
+      <div className="hero-band flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <p className="section-label">{today}</p>
+          <h1 className="display-title mt-4">
+            {greeting()}
+            {firstName ? `, ${firstName}` : ""}
+            <span className="text-rust">.</span>
+          </h1>
+          <p className="mt-3 text-[15px] text-muted">
+            {site.name} — {site.tagline}
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Link href="/projects/new" className="btn-primary">
+            <Plus size={15} /> New project
+          </Link>
+          <Link href="/documents" className="btn-secondary">
+            <Plus size={15} /> Upload document
+          </Link>
+          {isAdmin && (
+            <Link href="/news/new" className="btn-secondary">
+              <Plus size={15} /> Post news
             </Link>
-            <Link href="/documents" className="btn-secondary">
-              <Plus size={15} /> Upload document
-            </Link>
-            {isAdmin && (
-              <Link href="/news/new" className="btn-secondary">
-                <Plus size={15} /> Post news
-              </Link>
-            )}
-          </div>
+          )}
         </div>
       </div>
 
-      {isAdmin && compliance && (
-        <div className="hero-metric flex flex-wrap items-end justify-between gap-6">
-          <div>
-            <p className="section-label text-white/55">Schedule 1 compliance</p>
-            <p className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">
-              {compliance.averagePercent}%
-            </p>
-            <p className="mt-2 text-sm text-white/55">
-              {compliance.fullyCompliant} of {compliance.total} members fully
-              compliant · {compliance.incomplete} incomplete
-            </p>
-          </div>
-          <Link href="/compliance" className="btn-secondary !border-white/15 !bg-white/10 !text-white hover:!bg-white/15">
-            <ShieldCheck size={15} /> View compliance
-          </Link>
+      {/* Consortium at a glance — the homepage's dark stats panel */}
+      <div className="grid overflow-hidden rounded-[4px] bg-coal text-white lg:grid-cols-[1.25fr_1fr]">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
+          {stats.map(({ href, label, count, detail, icon: Icon }) => (
+            <Link
+              key={href}
+              href={href}
+              className="group flex flex-col justify-between gap-8 border-white/10 p-6 transition hover:bg-white/[0.04] [&:not(:last-child)]:border-r"
+            >
+              <span className="flex items-center justify-between text-white/40">
+                <Icon size={16} strokeWidth={1.75} />
+                <ArrowUpRight
+                  size={14}
+                  className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white"
+                />
+              </span>
+              <span>
+                <span className="stat-value block">{count}</span>
+                <span className="section-label mt-3 block text-white/55">{label}</span>
+                <span className="mt-1 block text-xs text-white/35">{detail}</span>
+              </span>
+            </Link>
+          ))}
         </div>
-      )}
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {stats.map((stat) => (
-          <StatCard key={stat.href} {...stat} />
-        ))}
+        <div className="flex flex-col justify-between gap-8 border-white/10 bg-coal-2 p-6 sm:p-8 max-lg:border-t lg:border-l">
+          {isAdmin && compliance ? (
+            <>
+              <div>
+                <p className="section-label text-white/55">Schedule 1 compliance</p>
+                <p className="mt-4 text-[64px] leading-none tracking-[-0.05em]">
+                  {compliance.averagePercent}
+                  <span className="text-rust">%</span>
+                </p>
+                <p className="mt-3 text-sm text-white/55">
+                  {compliance.fullyCompliant} of {compliance.total} members fully
+                  compliant · {compliance.incomplete} incomplete
+                </p>
+                <div className="mt-5 h-1 w-full bg-white/10">
+                  <div
+                    className="h-full bg-rust"
+                    style={{ width: `${compliance.averagePercent}%` }}
+                  />
+                </div>
+              </div>
+              <Link
+                href="/compliance"
+                className="inline-flex items-center gap-2 self-start border-b border-white/40 pb-1.5 text-sm transition hover:border-rust hover:text-rust"
+              >
+                <ShieldCheck size={15} /> View compliance
+              </Link>
+            </>
+          ) : (
+            <>
+              <div>
+                <p className="section-label text-white/55">SEZ Africa protocol</p>
+                <p className="mt-4 text-[22px] leading-snug tracking-[-0.02em]">
+                  Identify<span className="text-rust">.</span> Verify
+                  <span className="text-rust">.</span>
+                  <br />
+                  Protect<span className="text-rust">.</span> Transact
+                  <span className="text-rust">.</span>
+                </p>
+                <p className="mt-3 text-sm text-white/55">
+                  Every project follows the four-phase engagement protocol.
+                </p>
+              </div>
+              <Link
+                href="/projects"
+                className="inline-flex items-center gap-2 self-start border-b border-white/40 pb-1.5 text-sm transition hover:border-rust hover:text-rust"
+              >
+                <Layers size={15} /> View projects
+              </Link>
+            </>
+          )}
+        </div>
       </div>
 
       <div className="grid gap-6 xl:grid-cols-3">
@@ -206,7 +249,7 @@ export default async function DashboardPage() {
                     key={member.id}
                     href={`/members/${member.id}`}
                     title={member.full_name}
-                    className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-indigo-100 to-violet-100 text-xs font-semibold text-indigo-700 ring-2 ring-white transition hover:scale-105"
+                    className="flex h-11 w-11 items-center justify-center rounded-full bg-stone text-xs font-medium text-coal ring-1 ring-line transition hover:bg-coal hover:text-white"
                   >
                     {member.full_name
                       .split(/\s+/)
@@ -217,7 +260,7 @@ export default async function DashboardPage() {
                 ))}
                 <Link
                   href="/members"
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-dashed border-line text-muted transition hover:border-line-strong hover:text-ink"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-dashed border-line-strong text-muted transition hover:border-line-strong hover:text-ink"
                 >
                   <Plus size={16} />
                 </Link>

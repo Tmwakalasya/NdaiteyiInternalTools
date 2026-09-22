@@ -232,7 +232,7 @@ export function MemberForm({ member }: { member?: Member }) {
       </div>
 
       {error && (
-        <p className="rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger">
+        <p className="rounded-[4px] bg-danger/10 px-4 py-3 text-sm text-danger">
           {error}
         </p>
       )}

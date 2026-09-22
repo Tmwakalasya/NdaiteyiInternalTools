@@ -71,7 +71,7 @@ export function MemberAdminActions({ member }: { member: Member }) {
         </button>
       </div>
       {message && (
-        <p className="mt-4 rounded-xl border border-line bg-base px-4 py-3 text-sm text-ink/85">
+        <p className="mt-4 rounded-[4px] border border-line bg-canvas px-4 py-3 text-sm text-ink/85">
           {message}
         </p>
       )}

@@ -81,7 +81,7 @@ export function ProjectForm({ project }: { project?: Project }) {
       </div>
 
       {!editing && (
-        <div className="flex items-start gap-3 rounded-xl border border-line bg-base p-4">
+        <div className="flex items-start gap-3 rounded-[4px] border border-line bg-canvas p-4">
           <ListChecks size={18} className="mt-0.5 shrink-0 text-accent" />
           <p className="text-sm text-muted">
             This project will start with the{" "}
@@ -96,7 +96,7 @@ export function ProjectForm({ project }: { project?: Project }) {
       )}
 
       {error && (
-        <p className="rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger">
+        <p className="rounded-[4px] bg-danger/10 px-4 py-3 text-sm text-danger">
           {error}
         </p>
       )}
