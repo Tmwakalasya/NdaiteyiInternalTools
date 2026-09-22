@@ -31,9 +31,9 @@ const tileByType: Record<ActivityType, string> = {
   member_added: "metric-tile-indigo",
 };
 
-export async function ActivityFeed() {
+export async function ActivityFeed({ limit = 8 }: { limit?: number }) {
   const supabase = await createClient();
-  const activity = await getRecentActivity(supabase);
+  const activity = await getRecentActivity(supabase, limit);
 
   if (activity.length === 0) {
     return (
@@ -46,7 +46,7 @@ export async function ActivityFeed() {
   }
 
   return (
-    <div className="divide-y divide-line overflow-hidden rounded-3xl border border-line bg-surface shadow-[0_8px_30px_rgba(0,0,0,0.06)]">
+    <div className="divide-y divide-line overflow-hidden rounded-[4px] border border-line bg-surface">
       {activity.map((item) => {
         const Icon = iconByType[item.type];
         return (
@@ -55,7 +55,7 @@ export async function ActivityFeed() {
             href={item.href}
             className="document-row group block px-5 py-4 hover:bg-panel/80"
           >
-            <span className={`${tileByType[item.type]} h-9 w-9 shrink-0 rounded-lg`}>
+            <span className={`${tileByType[item.type]} h-9 w-9 shrink-0`}>
               <Icon size={16} strokeWidth={1.75} />
             </span>
             <div className="min-w-0 flex-1">

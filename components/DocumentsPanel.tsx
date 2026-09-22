@@ -162,7 +162,7 @@ export function DocumentsPanel({
         )}
 
         {error && (
-          <p className="rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger">
+          <p className="rounded-[4px] bg-danger/10 px-4 py-3 text-sm text-danger">
             {error}
           </p>
         )}
@@ -202,14 +202,14 @@ export function DocumentsPanel({
                 <button
                   onClick={() => download(doc)}
                   title="Download"
-                  className="flex h-9 w-9 items-center justify-center rounded-xl text-muted transition hover:bg-white/[0.06] hover:text-ink"
+                  className="flex h-9 w-9 items-center justify-center rounded-[4px] text-muted transition hover:bg-white/[0.06] hover:text-ink"
                 >
                   <Download size={17} />
                 </button>
                 <button
                   onClick={() => remove(doc)}
                   title="Delete"
-                  className="flex h-9 w-9 items-center justify-center rounded-xl text-muted transition hover:bg-danger/10 hover:text-danger"
+                  className="flex h-9 w-9 items-center justify-center rounded-[4px] text-muted transition hover:bg-danger/10 hover:text-danger"
                 >
                   <Trash2 size={16} />
                 </button>

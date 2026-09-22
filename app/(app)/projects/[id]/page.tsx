@@ -7,9 +7,9 @@ import { DocumentsPanel } from "@/components/DocumentsPanel";
 import type { Document, Project, StageWithItems } from "@/lib/types";
 
 const statusStyles: Record<Project["status"], string> = {
-  active: "border-violet-400/25 bg-violet-500/10 text-violet-300",
-  on_hold: "border-line bg-white/[0.03] text-muted",
-  completed: "border-emerald-400/25 bg-emerald-500/10 text-emerald-400",
+  active: "border-rust/25 bg-rust/[0.07] text-rust",
+  on_hold: "border-line bg-panel text-muted",
+  completed: "border-emerald-700/20 bg-emerald-700/[0.07] text-emerald-800",
 };
 
 const statusLabel: Record<Project["status"], string> = {

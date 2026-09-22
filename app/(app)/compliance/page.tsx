@@ -47,13 +47,13 @@ export default async function CompliancePage() {
           </p>
         </div>
         <div className="flex flex-col justify-end gap-3 sm:items-end">
-          <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm">
+          <div className="rounded-[4px] border border-white/10 bg-white/5 px-4 py-3 text-sm">
             <span className="text-white/60">Fully compliant</span>
             <p className="mt-1 text-xl font-semibold text-white">
               {summary.fullyCompliant}
             </p>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm">
+          <div className="rounded-[4px] border border-white/10 bg-white/5 px-4 py-3 text-sm">
             <span className="text-white/60">Incomplete</span>
             <p className="mt-1 text-xl font-semibold text-white">
               {summary.incomplete}

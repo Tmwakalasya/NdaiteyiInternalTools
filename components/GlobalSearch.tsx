@@ -228,9 +228,9 @@ function GlobalSearchDialog({
                             <button
                               type="button"
                               onClick={() => navigate(item.href)}
-                              className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition ${
+                              className={`flex w-full items-center gap-3 rounded-[4px] px-3 py-2.5 text-left transition ${
                                 active
-                                  ? "bg-indigo-50 text-ink"
+                                  ? "bg-panel text-ink"
                                   : "text-ink/90 hover:bg-panel"
                               }`}
                               onMouseEnter={() => setSelected(flatIndex)}
