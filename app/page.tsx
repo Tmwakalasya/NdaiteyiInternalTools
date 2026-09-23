@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, Menu } from "lucide-react";
 import { BackgroundVideo } from "@/components/site/BackgroundVideo";
+import { EnquiryForm } from "@/components/site/EnquiryForm";
 import { PriceTicker } from "@/components/PriceTicker";
 import { getMetalPrices } from "@/lib/prices";
 import {
@@ -466,38 +467,39 @@ export default async function Home() {
         </section>
 
         {/* Contact */}
-        <section className="site-section bg-coal text-white">
+        <section id="enquire" className="site-section scroll-mt-4 bg-coal text-white">
           <div className="site-wrap">
             <p className="site-eyebrow text-white/55">Let&rsquo;s raise the standard.</p>
             <h2 className="site-display mt-8 max-w-[14ch] text-[clamp(44px,7vw,96px)]">
               What are you looking to trade<span className="text-rust">?</span>
             </h2>
-            <div className="mt-14 flex flex-col gap-10 border-t border-white/10 pt-10 md:flex-row md:items-end md:justify-between">
-              <div>
-                {site.contactEmail ? (
+            <div className="mt-14 grid gap-12 lg:grid-cols-[1fr_1.6fr] lg:gap-20">
+              <div className="space-y-6 text-[15px] text-white/55">
+                <p>
+                  Tell us what you&rsquo;re buying or selling. A consortium
+                  member reviews every enquiry and replies directly.
+                </p>
+                {site.contactEmail && (
                   <a
                     href={`mailto:${site.contactEmail}`}
-                    className="inline-flex items-center gap-3 text-[clamp(22px,3vw,34px)] tracking-[-0.03em] transition hover:text-rust"
+                    className="inline-flex items-center gap-2 text-white transition hover:text-rust"
                   >
-                    {site.contactEmail} <ArrowUpRight size={24} />
+                    {site.contactEmail} <ArrowUpRight size={16} />
                   </a>
-                ) : (
-                  <Link
-                    href="/login"
-                    className="inline-flex items-center gap-3 text-[clamp(22px,3vw,34px)] tracking-[-0.03em] transition hover:text-rust"
-                  >
-                    Members: sign in to the portal <ArrowUpRight size={24} />
-                  </Link>
                 )}
-                <p className="mt-3 text-[14px] text-white/55">
-                  Introductions are handled by a consortium member directly.
-                </p>
+                <ul className="flex flex-wrap gap-x-5 gap-y-1 text-[13px]">
+                  {countries.map((c) => (
+                    <li key={c}>{c}</li>
+                  ))}
+                </ul>
+                <Link
+                  href="/login"
+                  className="inline-flex items-center gap-2 text-[14px] text-white/70 transition hover:text-white"
+                >
+                  Members: sign in to the portal <ArrowUpRight size={14} />
+                </Link>
               </div>
-              <ul className="flex flex-wrap gap-x-6 gap-y-2 text-[14px] text-white/55">
-                {countries.map((c) => (
-                  <li key={c}>{c}</li>
-                ))}
-              </ul>
+              <EnquiryForm />
             </div>
           </div>
         </section>

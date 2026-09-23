@@ -98,7 +98,8 @@ export type ActivityType =
   | "document_uploaded"
   | "member_document_uploaded"
   | "stage_completed"
-  | "member_added";
+  | "member_added"
+  | "enquiry_received";
 
 export type ActivityItem = {
   id: string;
@@ -145,4 +146,23 @@ export type Notification = {
   entity_key: string;
   read_at: string | null;
   created_at: string;
+};
+
+export type EnquiryInterest = "buying" | "selling" | "partnership" | "other";
+export type EnquiryStatus = "new" | "in_review" | "converted" | "declined";
+
+export type Enquiry = {
+  id: string;
+  full_name: string;
+  company: string | null;
+  email: string;
+  phone: string | null;
+  country: string | null;
+  interest: EnquiryInterest;
+  commodity: string | null;
+  message: string;
+  status: EnquiryStatus;
+  project_id: string | null;
+  created_at: string;
+  updated_at: string;
 };

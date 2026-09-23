@@ -1,7 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { defaultTransactionStages } from "@/lib/config";
-import type { Project, ProjectStage } from "@/lib/types";
+import { createProjectWithStages } from "@/lib/projects";
 
 // Creates a project and seeds it with the SEZ Africa four-phase checklist.
 export async function POST(request: NextRequest) {
@@ -24,17 +23,13 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { data: project, error } = await supabase
-    .from("projects")
-    .insert({
-      name: name.trim(),
-      description: description?.trim() || null,
-      created_by: user.id,
-    })
-    .select()
-    .single<Project>();
+  const project = await createProjectWithStages(supabase, {
+    name: name.trim(),
+    description: description?.trim() || null,
+    createdBy: user.id,
+  });
 
-  if (error || !project) {
+  if (!project) {
     return NextResponse.json(
       {
         error:
@@ -42,31 +37,6 @@ export async function POST(request: NextRequest) {
       },
       { status: 500 }
     );
-  }
-
-  // Seed the phases and their tick-off items.
-  for (let s = 0; s < defaultTransactionStages.length; s++) {
-    const stage = defaultTransactionStages[s];
-    const { data: stageRow } = await supabase
-      .from("project_stages")
-      .insert({
-        project_id: project.id,
-        name: stage.name,
-        description: stage.description,
-        position: s,
-      })
-      .select()
-      .single<ProjectStage>();
-
-    if (stageRow) {
-      await supabase.from("project_stage_items").insert(
-        stage.items.map((label, i) => ({
-          stage_id: stageRow.id,
-          label,
-          position: i,
-        }))
-      );
-    }
   }
 
   return NextResponse.json({ id: project.id });

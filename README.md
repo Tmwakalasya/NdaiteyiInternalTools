@@ -30,6 +30,12 @@ Everything is invitation-only: nobody can see anything without signing in.
    This adds the per-member **Schedule 1 due-diligence uploads** on member
    profiles (private bucket; a member sees only the files they uploaded,
    admins see all).
+6. Paste and run
+   [`supabase/04_notifications.sql`](supabase/04_notifications.sql), then
+   [`supabase/05_enquiries.sql`](supabase/05_enquiries.sql). The second adds
+   the **Enquiries** inbox for the homepage's enquiry form. Only admins can
+   read enquiries. Until it's run, the form shows an error when someone
+   tries to send it.
 
 ## 2. Connect this website to the database
 
@@ -147,6 +153,7 @@ from this feed.
 | --- | --- |
 | Database schema & security rules | `supabase/schema.sql` |
 | Starting member data | `supabase/seed.sql` |
+| Website enquiries table + security rules | `supabase/05_enquiries.sql` |
 | Projects & documents tables + bucket | `supabase/02_projects_documents.sql` |
 | Member Schedule 1 documents + bucket | `supabase/03_member_documents.sql` |
 | Site name + the SEZ project phase template | `lib/config.ts` |
