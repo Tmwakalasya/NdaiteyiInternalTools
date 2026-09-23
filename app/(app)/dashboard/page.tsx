@@ -9,6 +9,7 @@ import {
   Users,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { getSessionProfile } from "@/lib/auth";
 import { ActivityFeed } from "@/components/ActivityFeed";
 import { EmptyState } from "@/components/EmptyState";
 import { PriceTicker } from "@/components/PriceTicker";
@@ -18,7 +19,7 @@ import {
   getComplianceOverview,
 } from "@/lib/compliance";
 import { site } from "@/lib/config";
-import type { NewsPost, Profile, Project } from "@/lib/types";
+import type { NewsPost, Project } from "@/lib/types";
 
 type ProjectWithStages = Project & {
   project_stages: { completed: boolean }[];
@@ -33,20 +34,19 @@ function greeting() {
 
 export default async function DashboardPage() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
 
+  // The session lookup runs alongside the data queries, not before them.
   const [
+    { profile, isAdmin },
     { count: memberCount },
     { count: projectCount },
     { count: docCount },
     { count: newsCount },
     { data: latestNews },
-    { data: profile },
     { data: activeProjects },
     { data: recentMembers },
   ] = await Promise.all([
+    getSessionProfile(),
     supabase.from("members").select("*", { count: "exact", head: true }),
     supabase.from("projects").select("*", { count: "exact", head: true }),
     supabase.from("documents").select("*", { count: "exact", head: true }),
@@ -57,7 +57,6 @@ export default async function DashboardPage() {
       .order("created_at", { ascending: false })
       .limit(3)
       .returns<NewsPost[]>(),
-    supabase.from("profiles").select("*").eq("id", user!.id).single<Profile>(),
     supabase
       .from("projects")
       .select("*, project_stages(completed)")
@@ -72,7 +71,6 @@ export default async function DashboardPage() {
       .limit(6),
   ]);
 
-  const isAdmin = profile?.role === "admin";
   const firstName = profile?.full_name?.split(" ")[0];
   const today = new Date().toLocaleDateString("en-GB", {
     weekday: "long",

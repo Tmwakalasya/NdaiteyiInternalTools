@@ -1,34 +1,25 @@
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { getSessionProfile } from "@/lib/auth";
 import { Sidebar } from "@/components/Sidebar";
 import { GradientShell } from "@/components/GradientShell";
 import { SearchProvider } from "@/components/GlobalSearch";
-import type { Profile } from "@/lib/types";
 
 export default async function AppLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // Shared with the page via cache(), so this costs no extra lookups.
+  const { user, isAdmin } = await getSessionProfile();
 
   if (!user) {
     redirect("/login");
   }
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", user.id)
-    .single<Profile>();
-
   return (
     <SearchProvider>
       <div className="flex min-h-screen">
-        <Sidebar email={user.email ?? ""} isAdmin={profile?.role === "admin"} />
+        <Sidebar email={user.email ?? ""} isAdmin={isAdmin} />
         <GradientShell variant="app">
           <div className="relative z-[1] flex min-h-screen flex-1 flex-col">
             <main className="page-enter mx-auto w-full max-w-6xl flex-1 px-6 py-10 sm:px-10">
