@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-09-23 — Metal price ticker
+
+### New
+- **Metal price ticker** under the homepage film and on the dashboard: copper,
+  gold, platinum, palladium, nickel, silver, zinc and aluminium in USD, with
+  daily change where the feed provides it. Prices come from Metals.Dev,
+  refresh hourly and are labelled "Indicative" with the time they were
+  updated.
+- The ticker pauses on hover, and stays still for visitors who have turned on
+  reduced motion.
+- It needs `METALS_DEV_API_KEY` (README step 6b). Without the key, or when
+  the feed fails or goes stale, the ticker is hidden and the homepage shows
+  the countries strip instead.
+
 ## 2026-09-22 — Website and portal refresh
 
 ### New

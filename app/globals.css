@@ -286,3 +286,42 @@ h3,
     transition: none !important;
   }
 }
+
+/* ---------- Metal price ticker ---------- */
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker {
+  mask-image: linear-gradient(to right, transparent, black 32px, black calc(100% - 32px), transparent);
+}
+
+.ticker-track {
+  animation: ticker-scroll 60s linear infinite;
+}
+
+.ticker:hover .ticker-track,
+.ticker:focus-within .ticker-track {
+  animation-play-state: paused;
+}
+
+/* Reduced motion: no scrolling, swipe/scroll through the list instead */
+@media (prefers-reduced-motion: reduce) {
+  .ticker {
+    overflow-x: auto;
+    mask-image: none;
+  }
+
+  .ticker-track {
+    animation: none;
+  }
+
+  .ticker-track > [aria-hidden] {
+    display: none;
+  }
+}

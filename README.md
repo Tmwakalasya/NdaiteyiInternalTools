@@ -99,6 +99,23 @@ Without this, news posts still appear on the site — they just aren't emailed.
    Resend only delivers to the email address you signed up with (good for
    testing).
 
+## 6b. Turn on the metal price ticker (optional)
+
+A scrolling strip of indicative prices (copper, gold, platinum, palladium,
+nickel, silver, zinc, aluminium) appears under the homepage film and on the
+dashboard. Until it's set up, the homepage shows the list of countries
+instead.
+
+1. Sign up at [metals.dev](https://metals.dev) and choose the **Copper** plan
+   (about $1.79/month). Their terms only allow showing prices on a website
+   while you have a paid plan, so the free plan isn't enough.
+2. Copy your API key into `.env.local` (and Vercel) as `METALS_DEV_API_KEY`.
+
+Prices refresh hourly (about 750 requests a month, well within the plan). If
+the feed fails or its prices are more than 3 days old, the strip hides itself
+rather than show wrong numbers. Cobalt, iron ore and lithium aren't available
+from this feed.
+
 ## 7. Put it online (Vercel)
 
 1. Push this folder to GitHub, then import the repository at
