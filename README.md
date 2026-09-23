@@ -111,7 +111,10 @@ instead.
    while you have a paid plan, so the free plan isn't enough.
 2. Copy your API key into `.env.local` (and Vercel) as `METALS_DEV_API_KEY`.
 
-Prices refresh hourly (about 750 requests a month, well within the plan). If
+Prices refresh hourly (about 750 requests a month, well within the plan).
+On the free plan (100 requests a month) also set
+`METALS_DEV_REFRESH_HOURS=12` so it stays within the limit. Local
+development and the live site share the same quota. If
 the feed fails or its prices are more than 3 days old, the strip hides itself
 rather than show wrong numbers. Cobalt, iron ore and lithium aren't available
 from this feed.

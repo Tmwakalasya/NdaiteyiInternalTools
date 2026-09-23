@@ -298,6 +298,7 @@ h3,
 }
 
 .ticker {
+  overflow: hidden;
   mask-image: linear-gradient(to right, transparent, black 32px, black calc(100% - 32px), transparent);
 }
 

@@ -41,6 +41,12 @@ const MAX_AGE_MS = 72 * 60 * 60 * 1000;
 
 const TROY_OUNCES_PER_KG = 32.1507466;
 const TROY_OUNCES_PER_TONNE = 32150.7466;
+// How often to refresh latest prices. Hourly (~750 requests/month) suits
+// the paid Copper plan; set METALS_DEV_REFRESH_HOURS=12 for the free plan's
+// 100 requests/month (~90 with the daily history call).
+const REFRESH_SECONDS =
+  Math.max(1, Number(process.env.METALS_DEV_REFRESH_HOURS) || 1) * 3600;
+
 // Overridable for local testing against a mock server.
 const API = process.env.METALS_DEV_API_URL ?? "https://api.metals.dev/v1";
 
@@ -65,10 +71,10 @@ export async function getMetalPrices(): Promise<MetalPrices | null> {
 
   try {
     // Latest prices in USD per kg: more precise for base metals than per
-    // troy ounce. Cached for an hour (~720 requests a month).
+    // troy ounce.
     const latestRes = await fetch(
       `${API}/latest?api_key=${apiKey}&currency=USD&unit=kg`,
-      { next: { revalidate: 3600 } }
+      { next: { revalidate: REFRESH_SECONDS } }
     );
     const latest = (await latestRes.json()) as LatestResponse;
     if (latest.status !== "success" || !latest.metals) return null;
