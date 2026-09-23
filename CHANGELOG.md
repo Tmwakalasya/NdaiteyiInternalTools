@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-09-23 — Faster portal
+
+### Changed
+- **Instant feedback on click:** the portal shows a loading outline while a
+  page loads, instead of doing nothing until it's ready.
+- **Local login checks:** `proxy.ts` and `getSessionProfile()` verify the
+  login token locally (`getClaims()`) instead of calling Supabase Auth on
+  every click. A session signed out elsewhere now stays valid until its token
+  expires (up to 1 hour).
+- **Cached videos:** homepage films and posters are cached by browsers for 7
+  days and by Vercel's CDN for 30. If you replace a video, give it a new file
+  name.
+
 ## 2026-09-23 — Website enquiries
 
 ### New
