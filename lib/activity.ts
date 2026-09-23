@@ -23,6 +23,7 @@ export async function getRecentActivity(
     { data: memberDocs },
     { data: stages },
     { data: members },
+    { data: enquiries },
   ] = await Promise.all([
     supabase
       .from("news_posts")
@@ -53,6 +54,13 @@ export async function getRecentActivity(
     supabase
       .from("members")
       .select("id, full_name, created_at")
+      .order("created_at", { ascending: false })
+      .limit(FETCH_LIMIT),
+    // Row security returns these to admins only, so members never see
+    // enquiries in their feed or notifications.
+    supabase
+      .from("enquiries")
+      .select("id, full_name, company, created_at")
       .order("created_at", { ascending: false })
       .limit(FETCH_LIMIT),
   ]);
@@ -128,6 +136,17 @@ export async function getRecentActivity(
       href: `/members/${member.id}`,
       actorId: null,
       occurredAt: member.created_at,
+    });
+  }
+
+  for (const enquiry of enquiries ?? []) {
+    items.push({
+      id: `enquiry-${enquiry.id}`,
+      type: "enquiry_received",
+      summary: `New enquiry from ${enquiry.full_name}${enquiry.company ? ` (${enquiry.company})` : ""}`,
+      href: `/enquiries/${enquiry.id}`,
+      actorId: null,
+      occurredAt: enquiry.created_at,
     });
   }
 

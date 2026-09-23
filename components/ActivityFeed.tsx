@@ -2,6 +2,7 @@ import Link from "next/link";
 import {
   CheckCircle2,
   FileText,
+  Inbox,
   Layers,
   Newspaper,
   Upload,
@@ -20,6 +21,7 @@ const iconByType: Record<ActivityType, LucideIcon> = {
   member_document_uploaded: Upload,
   stage_completed: CheckCircle2,
   member_added: UserPlus,
+  enquiry_received: Inbox,
 };
 
 const tileByType: Record<ActivityType, string> = {
@@ -29,6 +31,7 @@ const tileByType: Record<ActivityType, string> = {
   member_document_uploaded: "metric-tile-indigo",
   stage_completed: "metric-tile-violet",
   member_added: "metric-tile-indigo",
+  enquiry_received: "metric-tile-violet",
 };
 
 export async function ActivityFeed({ limit = 8 }: { limit?: number }) {

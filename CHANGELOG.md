@@ -1,5 +1,33 @@
 # Changelog
 
+## 2026-09-23 — Website enquiries
+
+### New
+- **Enquiry form** on the homepage. Visitors say whether they're buying,
+  selling or proposing a partnership, plus the commodity, country and a
+  message. It replaces the "sign in" link that stood in for a contact email.
+- **Enquiries inbox** for admins (sidebar → Enquiries), with Open, Converted,
+  Declined and All filters. On each enquiry, admins can reply by email, mark
+  it in review, decline it, or **convert it to a project** with the four
+  SEZ Africa phases already set up.
+- Admins are notified through the activity feed and bell, and by email when
+  Resend is configured (replying to that email goes to the person who
+  enquired).
+
+### Security
+- The public can't read or write the enquiries table directly. Submissions
+  go through `/api/enquiries`, which validates them, filters bots (a hidden
+  field plus a minimum fill time) and allows 3 per hour per visitor. Visitor
+  IPs are stored only as salted hashes.
+- Members never see enquiries, in the inbox, the feed or notifications.
+
+### Changed
+- Project creation moved to `lib/projects.ts`, shared by "New project" and
+  "Convert to project".
+
+### Deploying
+- Run `supabase/05_enquiries.sql` on the live database before merging.
+
 ## 2026-09-23 — Metal price ticker
 
 ### New

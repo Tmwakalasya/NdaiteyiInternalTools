@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   FileText,
   House,
+  Inbox,
   Layers,
   LogOut,
   Newspaper,
@@ -27,6 +28,7 @@ const links = [
 ];
 
 const adminLinks = [
+  { href: "/enquiries", label: "Enquiries", icon: Inbox },
   { href: "/compliance", label: "Compliance", icon: ShieldCheck },
   { href: "/members/new", label: "Add member", icon: Plus },
   { href: "/news/new", label: "Post an update", icon: Plus },
