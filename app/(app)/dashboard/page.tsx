@@ -11,6 +11,8 @@ import {
 import { createClient } from "@/lib/supabase/server";
 import { ActivityFeed } from "@/components/ActivityFeed";
 import { EmptyState } from "@/components/EmptyState";
+import { PriceTicker } from "@/components/PriceTicker";
+import { getMetalPrices } from "@/lib/prices";
 import {
   complianceSummary,
   getComplianceOverview,
@@ -146,6 +148,8 @@ export default async function DashboardPage() {
           )}
         </div>
       </div>
+
+      <PriceTicker prices={await getMetalPrices()} tone="light" />
 
       {/* Consortium at a glance — the homepage's dark stats panel */}
       <div className="grid overflow-hidden rounded-[4px] bg-coal text-white lg:grid-cols-[1.25fr_1fr]">

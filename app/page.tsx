@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, Menu } from "lucide-react";
 import { BackgroundVideo } from "@/components/site/BackgroundVideo";
+import { PriceTicker } from "@/components/PriceTicker";
+import { getMetalPrices } from "@/lib/prices";
 import {
   defaultTransactionStages,
   requiredMemberDocuments,
@@ -128,7 +130,9 @@ function Stop() {
   return <span className="text-rust">.</span>;
 }
 
-export default function Home() {
+export default async function Home() {
+  const prices = await getMetalPrices();
+
   return (
     <div className="site flex min-h-full flex-1 flex-col">
       <a
@@ -207,17 +211,21 @@ export default function Home() {
           </p>
         </section>
 
-        {/* Countries strip */}
-        <section className="border-b border-rule bg-paper py-8">
-          <div className="site-wrap flex flex-col gap-5 md:flex-row md:items-center md:gap-12">
-            <p className="site-eyebrow shrink-0 text-slate">Where our members operate</p>
-            <ul className="flex flex-wrap gap-x-10 gap-y-3 text-[22px] tracking-[-0.03em] text-coal/80 sm:text-[26px]">
-              {countries.map((c) => (
-                <li key={c}>{c}</li>
-              ))}
-            </ul>
-          </div>
-        </section>
+        {/* Metal prices — falls back to the countries strip without a feed */}
+        {prices ? (
+          <PriceTicker prices={prices} />
+        ) : (
+          <section className="border-b border-rule bg-paper py-8">
+            <div className="site-wrap flex flex-col gap-5 md:flex-row md:items-center md:gap-12">
+              <p className="site-eyebrow shrink-0 text-slate">Where our members operate</p>
+              <ul className="flex flex-wrap gap-x-10 gap-y-3 text-[22px] tracking-[-0.03em] text-coal/80 sm:text-[26px]">
+                {countries.map((c) => (
+                  <li key={c}>{c}</li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        )}
 
         {/* 01 — What we do */}
         <section id="what-we-do" className="site-section scroll-mt-4 bg-paper">
