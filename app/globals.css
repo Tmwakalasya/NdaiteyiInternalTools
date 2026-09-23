@@ -330,3 +330,22 @@ h3,
     display: none;
   }
 }
+
+/* ---------- Loading skeletons ---------- */
+@keyframes skeleton-pulse {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.skeleton {
+  border-radius: 3px;
+  background: var(--color-stone);
+  animation: skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}
